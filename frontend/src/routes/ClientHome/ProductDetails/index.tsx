@@ -5,12 +5,24 @@ import ProductDetailsCard from "../../../components/ProductDetailsCard";
 import * as productServices from '../../../services/product-services'
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { ProductDTO } from '../../../models/product';
+import axios from 'axios';
 
 export default function ProductDetails() {
 
    const params = useParams();
 
-   const product = productServices.findById(Number(params.productId));
+   const [product, setProduct] = useState<ProductDTO>();
+
+   const baseURL = axios.get(`http://localhost:8080/products/2`);
+
+   useEffect(() => {
+      baseURL.then(reponse => {
+         console.log(reponse)
+      setProduct(reponse.data)
+      });
+   }, [])
 
 
    return (
@@ -26,7 +38,7 @@ export default function ProductDetails() {
                <div className="dsc-btn-page-container">
                   <ButtonPrimary text="Comprar" />
                   <Link to={`/`}>
-                  <ButtonInverse text="Inicio" />
+                     <ButtonInverse text="Inicio" />
                   </Link>
                </div>
             </section>
