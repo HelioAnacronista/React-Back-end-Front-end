@@ -6,20 +6,18 @@ import CatalogCard from '../../../components/CatalogCard';
 import ButtonNextPage from '../../../components/ButtonNextPage';
 
 
-
+import * as productServices from '../../../services/product-services'
 import { useEffect, useState } from 'react';
 import { ProductDTO } from '../../../models/product';
-import axios from 'axios';
 
 
 export default function Catalog() {
 
    const [product, setProduct] = useState<ProductDTO[]>([]);
 
-   const baseURL = axios.get(`http://localhost:8080/products`);
-
+   
    useEffect(() => {
-      baseURL.then(response => {
+      productServices.findAll().then(response =>{
          setProduct(response.data.content);
       })
    }, []);
