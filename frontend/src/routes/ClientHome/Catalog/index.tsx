@@ -6,23 +6,34 @@ import CatalogCard from '../../../components/CatalogCard';
 import ButtonNextPage from '../../../components/ButtonNextPage';
 
 
-import * as productServices from '../../../services/product-services'
+
+import { useEffect, useState } from 'react';
+import { ProductDTO } from '../../../models/product';
+import axios from 'axios';
 
 
 export default function Catalog() {
 
-   return (
+   const [product, setProduct] = useState<ProductDTO[]>([]);
 
+   const baseURL = axios.get(`http://localhost:8080/products`);
+
+   useEffect(() => {
+      baseURL.then(response => {
+         setProduct(response.data.content);
+      })
+   }, []);
+
+   return (
 
       <main>
          <section id="catalog-section" className="dsc-container">
             <SearchBar />
 
             <div className="dsc-catalog-cards dsc-mb20 dsc-mt20">
-
+ 
                {
-                  productServices.findAll()
-                  .map(products => <CatalogCard key={products.id} product={products} />)
+                  product.map(products => <CatalogCard key={products.id} product={products} />)
                }
 
             </div>
